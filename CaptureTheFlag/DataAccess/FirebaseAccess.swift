@@ -9,6 +9,8 @@
 import Foundation
 import Firebase
 class FirebaseAccess {
+    var ref: DatabaseReference!
+    ref = Database.database().reference()
     
     init() {
         
