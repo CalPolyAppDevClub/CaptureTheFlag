@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03F4F7802043549C00E8963F /* GoogleService-Info.plist */; };
 		6BEC9A7920360BCC003A1296 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7820360BCC003A1296 /* AppDelegate.swift */; };
 		6BEC9A7B20360BCC003A1296 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7A20360BCC003A1296 /* ViewController.swift */; };
 		6BEC9A7E20360BCC003A1296 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7C20360BCC003A1296 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03F4F7802043549C00E8963F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		158392B9CBDEA7DAD8DEC41C /* Pods_CaptureTheFlag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9EA6B4F379DCAC5A26CB06 /* Pods_CaptureTheFlagTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlagTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BEC9A7520360BCC003A1296 /* CaptureTheFlag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptureTheFlag.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 		6BEC9A6C20360BCC003A1296 = {
 			isa = PBXGroup;
 			children = (
+				03F4F7802043549C00E8963F /* GoogleService-Info.plist */,
 				6BEC9A7720360BCC003A1296 /* CaptureTheFlag */,
 				6BEC9A8C20360BCC003A1296 /* CaptureTheFlagTests */,
 				6BEC9A7620360BCC003A1296 /* Products */,
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BEC9A8320360BCC003A1296 /* LaunchScreen.storyboard in Resources */,
+				03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */,
 				6BEC9A8020360BCC003A1296 /* Assets.xcassets in Resources */,
 				6BEC9A7E20360BCC003A1296 /* Main.storyboard in Resources */,
 			);
@@ -295,13 +299,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CaptureTheFlag-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E37D9D88E66BE7F2D7346A8A /* [CP] Embed Pods Frameworks */ = {
@@ -310,9 +317,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -340,13 +352,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CaptureTheFlagTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
