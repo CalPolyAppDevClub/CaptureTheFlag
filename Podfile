@@ -7,6 +7,9 @@ target 'CaptureTheFlag' do
 
   # Pods for CaptureTheFlag
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'Firebase/Storage'
   
   target 'CaptureTheFlagTests' do
     inherit! :search_paths
