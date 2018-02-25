@@ -9,15 +9,14 @@
 import Foundation
 import Firebase
 class FirebaseAccess {
-    var ref: DatabaseReference!
-    ref = Database.database().reference()
+    var ref = Database.database().reference()
     
     init() {
         
     }
     
     func createGame(id: String, name: String) {
-        
+    self.ref.child("capturetheflag-3cd15").setValue([id: name])
     }
     
 }
