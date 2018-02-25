@@ -20,6 +20,7 @@
 		6BEC9AA620360C60003A1296 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A9F20360C60003A1296 /* Game.swift */; };
 		6BEC9AA820360D5D003A1296 /* GameLobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9AA720360D5D003A1296 /* GameLobby.swift */; };
 		6E2EC7BB1DECA937F9326FB1 /* Pods_CaptureTheFlag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158392B9CBDEA7DAD8DEC41C /* Pods_CaptureTheFlag.framework */; };
+		AB95431E20434BC400E8B4EB /* FirebaseAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB95431D20434BC400E8B4EB /* FirebaseAccess.swift */; };
 		ABB8DCB79176121986F1BF69 /* Pods_CaptureTheFlagTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9EA6B4F379DCAC5A26CB06 /* Pods_CaptureTheFlagTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		6BEC9A9F20360C60003A1296 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		6BEC9AA720360D5D003A1296 /* GameLobby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLobby.swift; sourceTree = "<group>"; };
 		90C24D81E3E6DFC7EEDF31FC /* Pods-CaptureTheFlagTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlagTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlagTests/Pods-CaptureTheFlagTests.release.xcconfig"; sourceTree = "<group>"; };
+		AB95431D20434BC400E8B4EB /* FirebaseAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAccess.swift; sourceTree = "<group>"; };
 		B7C5F2095690C496434BD146 /* Pods-CaptureTheFlag.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlag.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag.debug.xcconfig"; sourceTree = "<group>"; };
 		D0116F43C1EE084FC1EF4C21 /* Pods-CaptureTheFlag.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlag.release.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag.release.xcconfig"; sourceTree = "<group>"; };
 		EDA71290BF306CBC669021FD /* Pods-CaptureTheFlagTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlagTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlagTests/Pods-CaptureTheFlagTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		6BEC9A7720360BCC003A1296 /* CaptureTheFlag */ = {
 			isa = PBXGroup;
 			children = (
+				AB95431C20434BA600E8B4EB /* DataAccess */,
 				6BEC9A9820360C41003A1296 /* GameLogic */,
 				6BEC9A7820360BCC003A1296 /* AppDelegate.swift */,
 				6BEC9A7A20360BCC003A1296 /* ViewController.swift */,
@@ -152,6 +155,14 @@
 				6BEC9A9920360C60003A1296 /* Team.swift */,
 			);
 			path = GameLogic;
+			sourceTree = "<group>";
+		};
+		AB95431C20434BA600E8B4EB /* DataAccess */ = {
+			isa = PBXGroup;
+			children = (
+				AB95431D20434BC400E8B4EB /* FirebaseAccess.swift */,
+			);
+			path = DataAccess;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,13 +306,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CaptureTheFlag-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E37D9D88E66BE7F2D7346A8A /* [CP] Embed Pods Frameworks */ = {
@@ -310,9 +324,14 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -340,13 +359,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CaptureTheFlagTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -356,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB95431E20434BC400E8B4EB /* FirebaseAccess.swift in Sources */,
 				6BEC9AA320360C60003A1296 /* GameLocation.swift in Sources */,
 				6BEC9AA620360C60003A1296 /* Game.swift in Sources */,
 				6BEC9AA020360C60003A1296 /* Team.swift in Sources */,
@@ -518,7 +541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QH4RJ755GR;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.calpoly.appdev.CaptureTheFlag;
@@ -534,7 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QH4RJ755GR;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.calpoly.appdev.CaptureTheFlag;
