@@ -42,10 +42,10 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
-        <!--View Controller-->
+        <!--Team Name/ # of players-->
         <scene sceneID="scS-rw-KNI">
             <objects>
-                <viewController id="7PW-cs-HeA" sceneMemberID="viewController">
+                <viewController title="Team Name/ # of players" id="7PW-cs-HeA" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DsD-Za-k2b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,10 +88,10 @@
             </objects>
             <point key="canvasLocation" x="1570" y="-283"/>
         </scene>
-        <!--View Controller-->
+        <!--Join game -->
         <scene sceneID="8kw-so-jlh">
             <objects>
-                <viewController id="Uz4-kh-Tdm" sceneMemberID="viewController">
+                <viewController title="Join game " id="Uz4-kh-Tdm" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xVo-L7-Sb0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
