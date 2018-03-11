@@ -71,3 +71,5 @@ fastlane/test_output
 
 Pods
 Podfile.lock
+
+GoogleService-Info.plist
