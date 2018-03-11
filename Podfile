@@ -10,6 +10,7 @@ target 'CaptureTheFlag' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'GoogleSignIn'
   
   target 'CaptureTheFlagTests' do
     inherit! :search_paths

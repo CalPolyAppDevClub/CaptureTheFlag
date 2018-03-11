@@ -1,3 +1,5 @@
+import CoreLocation
+
 class GameLocation {
     var latitude: Double
     var longitude: Double
@@ -7,6 +9,11 @@ class GameLocation {
         longitude = long
     }
 
+    init(loc: CLLocation) {
+        latitude = loc.coordinate.latitude
+        longitude = loc.coordinate.longitude
+    }
+    
     static func didTouch(a: GameLocation, b: GameLocation) -> Bool {
         //TODO: implement - are these locations close enought to be touching?
         return false
