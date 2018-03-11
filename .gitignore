@@ -4,6 +4,7 @@
 
 ## Build generated
 build/
+*.xcodeproj/
 DerivedData/
 
 ## Various settings
