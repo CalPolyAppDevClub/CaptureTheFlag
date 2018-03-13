@@ -8,14 +8,14 @@
 
 import UIKit
 import GoogleSignIn
-class ViewController: CaptureTheFlagViewController, GIDSignInUIDelegate  {
+
+class ViewController: CaptureTheFlagViewController  {
+    //Mark: Properties 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signIn()
-        let googleButton = GIDSignInButton()
-        view.addSubview(googleButton)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

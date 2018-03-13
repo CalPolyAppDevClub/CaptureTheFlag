@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03F4F7802043549C00E8963F /* GoogleService-Info.plist */; };
+		458B4A322055CD5900D64D00 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */; };
+		45F8E9BA205874CB00E88BC6 /* TeamNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */; };
+		45F8E9BC2058766600E88BC6 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */; };
+		45F8E9BE2058788400E88BC6 /* GameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9BD2058788400E88BC6 /* GameLobbyViewController.swift */; };
 		6BEC9A7920360BCC003A1296 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7820360BCC003A1296 /* AppDelegate.swift */; };
 		6BEC9A7B20360BCC003A1296 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7A20360BCC003A1296 /* ViewController.swift */; };
 		6BEC9A7E20360BCC003A1296 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7C20360BCC003A1296 /* Main.storyboard */; };
@@ -40,6 +44,10 @@
 		03F4F7802043549C00E8963F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		158392B9CBDEA7DAD8DEC41C /* Pods_CaptureTheFlag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9EA6B4F379DCAC5A26CB06 /* Pods_CaptureTheFlagTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlagTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = ../../Desktop/google_signin_sdk_4_1_2/GoogleSignIn.bundle; sourceTree = "<group>"; };
+		45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamNameViewController.swift; sourceTree = "<group>"; };
+		45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
+		45F8E9BD2058788400E88BC6 /* GameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLobbyViewController.swift; sourceTree = "<group>"; };
 		6BEC9A7520360BCC003A1296 /* CaptureTheFlag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptureTheFlag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BEC9A7820360BCC003A1296 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6BEC9A7A20360BCC003A1296 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +115,7 @@
 		6BEC9A6C20360BCC003A1296 = {
 			isa = PBXGroup;
 			children = (
+				458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */,
 				03F4F7802043549C00E8963F /* GoogleService-Info.plist */,
 				6BEC9A7720360BCC003A1296 /* CaptureTheFlag */,
 				6BEC9A8C20360BCC003A1296 /* CaptureTheFlagTests */,
@@ -132,6 +141,9 @@
 				6BEC9A9820360C41003A1296 /* GameLogic */,
 				6BEC9A7820360BCC003A1296 /* AppDelegate.swift */,
 				AB84CFB72055BEA300B84764 /* CaptureTheFlagViewController.swift */,
+				45F8E9BD2058788400E88BC6 /* GameLobbyViewController.swift */,
+				45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */,
+				45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */,
 				6BEC9A7A20360BCC003A1296 /* ViewController.swift */,
 				6BEC9A7C20360BCC003A1296 /* Main.storyboard */,
 				6BEC9A7F20360BCC003A1296 /* Assets.xcassets */,
@@ -260,6 +272,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				458B4A322055CD5900D64D00 /* GoogleSignIn.bundle in Resources */,
 				6BEC9A8320360BCC003A1296 /* LaunchScreen.storyboard in Resources */,
 				03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */,
 				6BEC9A8020360BCC003A1296 /* Assets.xcassets in Resources */,
@@ -395,9 +408,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB95431E20434BC400E8B4EB /* FirebaseAccess.swift in Sources */,
+				45F8E9BA205874CB00E88BC6 /* TeamNameViewController.swift in Sources */,
 				6BEC9AA320360C60003A1296 /* GameLocation.swift in Sources */,
 				6BEC9AA620360C60003A1296 /* Game.swift in Sources */,
+				45F8E9BC2058766600E88BC6 /* JoinGameViewController.swift in Sources */,
 				6BEC9AA020360C60003A1296 /* Team.swift in Sources */,
+				45F8E9BE2058788400E88BC6 /* GameLobbyViewController.swift in Sources */,
 				6BEC9AA520360C60003A1296 /* Player.swift in Sources */,
 				AB84CFB82055BEA300B84764 /* CaptureTheFlagViewController.swift in Sources */,
 				6BEC9AA820360D5D003A1296 /* GameLobby.swift in Sources */,
@@ -561,7 +577,7 @@
 				DEVELOPMENT_TEAM = 4C39NRN8PA;
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = carlos.garciaCaptureTheFLag;
+				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.CaptureTheFlag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -577,7 +593,7 @@
 				DEVELOPMENT_TEAM = 4C39NRN8PA;
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = carlos.garciaCaptureTheFLag;
+				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.CaptureTheFlag;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
