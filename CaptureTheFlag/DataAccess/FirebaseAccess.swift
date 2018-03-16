@@ -28,17 +28,36 @@ class FirebaseAccess {
     }
     
     func joinGame(key: String) {
+        print("Hello")
         ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
-            //no optional chaining yet
             self.game = Game(name: snapshot.value! as! String)
-            self.game?.id = key
+            self.game!.id = key 
         }
         
     }
     
-    //func addPlayer(player: Player) {
-        //self.ref.child(self.game!.id!).child("Players").child("")
-    //}
+    func addPlayer(player: String) {
+        print("add")
+        self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            var players = snapshot.children
+            var playerList = players.allObjects
+            var count = playerList.count
+            var counter = 1
+            print(count)
+            for item in playerList {
+                var tempItem = item as! DataSnapshot
+                if counter == count {
+                    var lastPlayerNumber = Int(tempItem.key)!
+                    var playerToAddNumber = lastPlayerNumber + 1
+                    self.game?.addPlayer(playerName: player, number: playerToAddNumber)
+                    self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).setValue(player)
+                }
+                counter += 1
+                
+            }
+            
+        }
+    }
     
     
     
