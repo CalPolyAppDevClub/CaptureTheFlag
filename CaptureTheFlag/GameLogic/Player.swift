@@ -1,6 +1,6 @@
 import Foundation
 
-class Player: Hashable {
+class Player: Hashable, CustomStringConvertible {
     //The Hashable protocol allows Player to be a key in a dictionary.
     
     var hashValue: Int //part of the Hashable protocol
@@ -24,6 +24,9 @@ class Player: Hashable {
         self.name = name
         self.playerNumber = playerNumber
         hashValue = playerNumber*4
+    }
+    public var description: String {
+        return "\(String(self.playerNumber)) \(self.name) "
     }
     
     static func ==(lhs: Player, rhs: Player) -> Bool {
