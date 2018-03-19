@@ -33,10 +33,18 @@ class FirebaseAccess {
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childAdded) { (snapshot) in
             self.game!.players.append(Player(name: snapshot.value as! String, playerNumber: Int(snapshot.key)!))
         }
+        self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childRemoved) { (snapshot) in
+            var counter = 0
+            for item in self.game!.players{
+                if item.playerNumber == Int(snapshot.key) {
+                    self.game!.players.remove(at: counter)
+                }
+                counter += 1
+            }
+        }
     }
     
     func joinGame(key: String, playerName: String) {
-        
         ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
             self.game = Game(name: snapshot.value! as! String)
             self.game!.id = key
@@ -45,7 +53,10 @@ class FirebaseAccess {
                 self.addPlayer(player: playerName)
             })
         }
-        
+    }
+    
+    func removePlayer(player: Int) {
+        self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
     }
     
     private func addPlayer(player: String) {
@@ -57,6 +68,7 @@ class FirebaseAccess {
             if count == 0 {
                 self.ref.child(self.game!.id!).child("Players").child("1").setValue(player)
             }
+            
             for item in playerList {
                 let tempItem = item as! DataSnapshot
                 if counter == count {
