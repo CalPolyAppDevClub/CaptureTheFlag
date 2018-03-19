@@ -36,7 +36,7 @@ class FirebaseAccess {
             var counter = 0
             for item in self.game!.players{
                 if item.playerNumber == Int(snapshot.key) {
-                    //self.game!.players.remove(at: counter)
+                    self.game!.players.remove(at: counter)
                 }
                 counter += 1
             }
