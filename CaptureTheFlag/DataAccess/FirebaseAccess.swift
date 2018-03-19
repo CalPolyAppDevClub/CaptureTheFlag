@@ -20,39 +20,35 @@ class FirebaseAccess {
     var game: Game?
     var gameCreator = false
     
-    func createGame(game: Game) {
+    func createGame(game: Game, playerName: String) {
         self.game = game
         self.game!.id = ref.childByAutoId().key
         self.ref.child(self.game!.id!).child("Name").setValue(self.game!.name)
         self.gameCreator = true
-        self.addPlayer(player: "Main Player")
+        self.joinGame(key: self.game!.id!, playerName: playerName)
         self.addOberervers()
     }
     
-    func addOberervers() {
+    private func addOberervers() {
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childAdded) { (snapshot) in
             self.game!.players.append(Player(name: snapshot.value as! String, playerNumber: Int(snapshot.key)!))
         }
     }
     
-    func joinGame(key: String) {
+    func joinGame(key: String, playerName: String) {
+        
         ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
             self.game = Game(name: snapshot.value! as! String)
             self.game!.id = key
             self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-                let players = snapshot.children
-                let playerList = players.allObjects
-                for item in playerList {
-                    let itemData = item as! DataSnapshot
-                    self.game!.players.append(Player(name: itemData.value as! String, playerNumber: Int(itemData.key)!))
-                }
+                self.addOberervers()
+                self.addPlayer(player: playerName)
             })
-            
         }
         
     }
     
-    func addPlayer(player: String) {
+    private func addPlayer(player: String) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
             let players = snapshot.children
             let playerList = players.allObjects
@@ -66,7 +62,7 @@ class FirebaseAccess {
                 if counter == count {
                     let lastPlayerNumber = Int(tempItem.key)!
                     let playerToAddNumber = lastPlayerNumber + 1
-                    self.game?.addPlayer(playerName: player, number: playerToAddNumber)
+                    //self.game?.addPlayer(playerName: player, number: playerToAddNumber)
                     self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).setValue(player)
                 }
                 counter += 1
