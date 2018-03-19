@@ -26,7 +26,7 @@ class FirebaseAccess {
         self.ref.child(self.game!.id!).child("Name").setValue(self.game!.name)
         self.gameCreator = true
         self.joinGame(key: self.game!.id!, playerName: playerName)
-        self.addOberervers()
+        
     }
     
     private func addOberervers() {
@@ -37,7 +37,7 @@ class FirebaseAccess {
             var counter = 0
             for item in self.game!.players{
                 if item.playerNumber == Int(snapshot.key) {
-                    self.game!.players.remove(at: counter)
+                    //self.game!.players.remove(at: counter)
                 }
                 counter += 1
             }
@@ -67,17 +67,17 @@ class FirebaseAccess {
             var counter = 1
             if count == 0 {
                 self.ref.child(self.game!.id!).child("Players").child("1").setValue(player)
-            }
-            
-            for item in playerList {
-                let tempItem = item as! DataSnapshot
-                if counter == count {
-                    let lastPlayerNumber = Int(tempItem.key)!
-                    let playerToAddNumber = lastPlayerNumber + 1
-                    //self.game?.addPlayer(playerName: player, number: playerToAddNumber)
-                    self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).setValue(player)
+            } else {
+                for item in playerList {
+                    let tempItem = item as! DataSnapshot
+                    if counter == count {
+                        let lastPlayerNumber = Int(tempItem.key)!
+                        let playerToAddNumber = lastPlayerNumber + 1
+                        //self.game?.addPlayer(playerName: player, number: playerToAddNumber)
+                        self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).setValue(player)
+                    }
+                    counter += 1
                 }
-                counter += 1
                 
             }
             
