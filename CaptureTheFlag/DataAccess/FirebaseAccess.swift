@@ -26,10 +26,9 @@ class FirebaseAccess {
         self.ref.child(self.game!.id!).child("Name").setValue(self.game!.name)
         self.gameCreator = true
         self.joinGame(key: self.game!.id!, playerName: playerName)
-        
     }
     
-    private func addOberervers() {
+    private func addObservers() {
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childAdded) { (snapshot) in
             self.game!.players.append(Player(name: snapshot.value as! String, playerNumber: Int(snapshot.key)!))
         }
@@ -49,7 +48,7 @@ class FirebaseAccess {
             self.game = Game(name: snapshot.value! as! String)
             self.game!.id = key
             self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-                self.addOberervers()
+                self.addObservers()
                 self.addPlayer(player: playerName)
             })
         }
@@ -83,11 +82,4 @@ class FirebaseAccess {
             
         }
     }
-    
-    
-    
-    
-    
-    
-    
 }
