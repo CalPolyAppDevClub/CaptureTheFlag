@@ -15,7 +15,7 @@
 
 import Foundation
 import Firebase
-class GameAccess {
+class FirebaseAccess{
     private var ref = Database.database().reference()
     var game: Game?
     var gameCreator = false

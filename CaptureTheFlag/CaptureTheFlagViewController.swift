@@ -9,7 +9,7 @@
 import UIKit
 
 class CaptureTheFlagViewController: UIViewController {
-    var gameAccess: GameAccess!
+    var firebaseAccess: FirebaseAccess!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +23,7 @@ class CaptureTheFlagViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CaptureTheFlagViewController {
-            nextViewController.gameAccess = self.gameAccess
+            nextViewController.firebaseAccess = self.firebaseAccess
         }
     }
     
