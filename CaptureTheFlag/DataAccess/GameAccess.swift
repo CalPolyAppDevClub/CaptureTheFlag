@@ -15,8 +15,8 @@
 
 import Foundation
 import Firebase
-class FirebaseAccess {
-    var ref = Database.database().reference()
+class GameAccess {
+    private var ref = Database.database().reference()
     var game: Game?
     var gameCreator = false
     
@@ -26,12 +26,16 @@ class FirebaseAccess {
         self.ref.child(self.game!.id!).child("Name").setValue(self.game!.name)
         self.gameCreator = true
         self.joinGame(key: self.game!.id!, playerName: playerName)
+        
     }
     
+    
     private func addObservers() {
+        //Player added observer
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childAdded) { (snapshot) in
             self.game!.players.append(Player(name: snapshot.value as! String, playerNumber: Int(snapshot.key)!))
         }
+        //Player removed observer
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childRemoved) { (snapshot) in
             var counter = 0
             for item in self.game!.players{
@@ -57,6 +61,7 @@ class FirebaseAccess {
     func removePlayer(player: Int) {
         self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
     }
+
     
     private func addPlayer(player: String) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
