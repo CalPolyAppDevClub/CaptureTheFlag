@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class CaptureTheFlagViewController: UIViewController, CLLocationManagerDelegate {
+class CaptureTheFlagViewController: UIViewController {
     var gameAccess: GameAccess!
     override func viewDidLoad() {
         super.viewDidLoad()
