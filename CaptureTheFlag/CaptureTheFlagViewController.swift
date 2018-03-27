@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreLocation
 
-class CaptureTheFlagViewController: UIViewController {
-    var firebaseAccess: FirebaseAccess!
+class CaptureTheFlagViewController: UIViewController, CLLocationManagerDelegate {
+    var gameAccess: GameAccess!
+    var locationManager: CLLocationManager!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,9 +25,15 @@ class CaptureTheFlagViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CaptureTheFlagViewController {
-            nextViewController.firebaseAccess = self.firebaseAccess
+            nextViewController.gameAccess = self.gameAccess
         }
     }
+    
+    
+    
+    
+    
+    
     
 
     /*
