@@ -154,7 +154,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         }
     }
     
-    private private func setUpLocationManager() {
+    private func setUpLocationManager() {
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestWhenInUseAuthorization()

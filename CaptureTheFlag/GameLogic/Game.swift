@@ -1,7 +1,6 @@
 import Foundation
 
 class Game {
-    
     //var startTime: Date
     //var teamA: Team
     //var teamB: Team
