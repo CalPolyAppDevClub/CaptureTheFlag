@@ -28,6 +28,21 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.updatePlayerLocation(location: location)
     }
     
+    func joinGame(key: String, playerName: String) {
+        ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
+            self.game = Game(name: snapshot.value! as! String)
+            self.game!.id = key
+            self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+                self.addObservers()
+                self.addPlayer(player: playerName)
+            })
+        }
+    }
+    
+    func removePlayer(player: Int) {
+        self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
+    }
+    
     func createGame(game: Game, playerName: String) {
         self.game = game
         self.game!.id = ref.childByAutoId().key
@@ -52,21 +67,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childChanged, with: playerPropertiesObserverCallback(snapshot:))
     }
     
-    //must be used with DataEventType.childChanged
-    private func playerPropertiesObserverCallback(snapshot: DataSnapshot) {
-        let playerNumber = Int(snapshot.key)
-        let listOfChildren = snapshot.children.allObjects
-        for item in listOfChildren {
-            let itemCasted = item as! DataSnapshot
-            if itemCasted.key == "Location" {
-                if let player = self.game!.getPlayerForNumber(playerNumber: playerNumber!) {
-                    if player != userPlayer! {
-                        player.location = self.createCLLocation(latitudeAndLogitudeString: itemCasted.value as! String)
-                    }
-                }
-            }
-        }
-    }
+    
     
     private func createCLLocation(latitudeAndLogitudeString: String) -> CLLocation {
         var latitude = ""
@@ -96,6 +97,22 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         }
     }
     
+    //must be used with DataEventType.childChanged
+    private func playerPropertiesObserverCallback(snapshot: DataSnapshot) {
+        let playerNumber = Int(snapshot.key)
+        let listOfChildren = snapshot.children.allObjects
+        for item in listOfChildren {
+            let itemCasted = item as! DataSnapshot
+            if itemCasted.key == "Location" {
+                if let player = self.game!.getPlayerForNumber(playerNumber: playerNumber!) {
+                    if player != userPlayer! {
+                        player.location = self.createCLLocation(latitudeAndLogitudeString: itemCasted.value as! String)
+                    }
+                }
+            }
+        }
+    }
+    
     //must be used with DataEventType.childAdded
     private func playerAddedObserverCallback(snapshot: DataSnapshot) {
         let playerChildren = snapshot.children.allObjects
@@ -109,25 +126,6 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         
         self.game!.players.append(Player(name: name, playerNumber: Int(snapshot.key)!))
     }
-    
-    
-
-    
-    func joinGame(key: String, playerName: String) {
-        ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
-            self.game = Game(name: snapshot.value! as! String)
-            self.game!.id = key
-            self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-                self.addObservers()
-                self.addPlayer(player: playerName)
-            })
-        }
-    }
-    
-    func removePlayer(player: Int) {
-        self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
-    }
-
     
      func addPlayer(player: String) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
@@ -156,7 +154,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         }
     }
     
-    private func setUpLocationManager() {
+    private private func setUpLocationManager() {
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestWhenInUseAuthorization()
