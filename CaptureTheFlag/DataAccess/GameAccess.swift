@@ -43,13 +43,11 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
     }
     
-    func createGame(game: Game, playerName: String) {
-        self.game = game
-        self.game!.id = ref.childByAutoId().key
-        self.ref.child(self.game!.id!).child("Name").setValue(self.game!.name)
+    func createGame(gameName: String, playerName: String) {
+        var gameId = ref.childByAutoId().key
+        self.ref.child(gameId).child("Name").setValue(gameName)
         self.gameCreator = true
-        self.joinGame(key: self.game!.id!, playerName: playerName)
-        
+        self.joinGame(key: gameId, playerName: playerName)
     }
     
     func updatePlayerLocation(location: CLLocation) {
@@ -155,7 +153,6 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
     }
     
     private func setUpLocationManager() {
-        self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.requestAlwaysAuthorization()
