@@ -27,15 +27,26 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         let location = locations[0]
         self.updatePlayerLocation(location: location)
     }
+
     
     func joinGame(key: String, playerName: String) {
-        ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
-            self.game = Game(name: snapshot.value! as! String)
-            self.game!.id = key
-            self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-                self.addObservers()
-                self.addPlayer(player: playerName)
-            })
+        if self.game == nil {
+            ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
+                if let snapshotValue = snapshot.value as? String {
+                    self.game = Game(name: snapshotValue)
+                    self.game!.id = key
+                    self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
+                        self.addPlayer(player: playerName, complete: {() in
+                            if self.userPlayer == nil {
+                                self.game = nil
+                            } else {
+                                self.addObservers()
+                            }
+                        })
+                        
+                    })
+                }
+            }
         }
     }
     
@@ -44,10 +55,12 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
     }
     
     func createGame(gameName: String, playerName: String) {
-        var gameId = ref.childByAutoId().key
-        self.ref.child(gameId).child("Name").setValue(gameName)
-        self.gameCreator = true
-        self.joinGame(key: gameId, playerName: playerName)
+        if self.game == nil {
+            let gameId = ref.childByAutoId().key
+            self.ref.child(gameId).child("Name").setValue(gameName)
+            self.gameCreator = true
+            self.joinGame(key: gameId, playerName: playerName)
+        }
     }
     
     func updatePlayerLocation(location: CLLocation) {
@@ -64,6 +77,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childChanged, with: playerPropertiesObserverCallback(snapshot:))
     }
+
     
     
     
@@ -125,7 +139,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.game!.players.append(Player(name: name, playerNumber: Int(snapshot.key)!))
     }
     
-     func addPlayer(player: String) {
+    private func addPlayer(player: String, complete: @escaping () -> ()) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
             let players = snapshot.children
             let playerList = players.allObjects
@@ -138,12 +152,22 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
             } else {
                 for item in playerList {
                     let tempItem = item as! DataSnapshot
+                    let tempItemList = tempItem.children.allObjects
+                    for item in tempItemList {
+                        let itemSnapshot = item as! DataSnapshot
+                        if itemSnapshot.key == "Name" && itemSnapshot.value as! String == player {
+                            complete()
+                            return
+                        }
+                    }
                     if counter == count {
                         let lastPlayerNumber = Int(tempItem.key)!
                         let playerToAddNumber = lastPlayerNumber + 1
-                        self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).child("Name").setValue(player)
+                    self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).child("Name").setValue(player)
                         self.userPlayer = Player(name: player, playerNumber: playerToAddNumber)
                         self.setUpLocationManager()
+                        complete()
+                        return
                     }
                     counter += 1
                 }
