@@ -7,3 +7,7 @@
 //
 
 import Foundation
+enum UsernameValidity {
+    case validUsername
+    case invalidUsername
+}
