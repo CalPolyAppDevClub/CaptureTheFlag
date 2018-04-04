@@ -16,6 +16,7 @@
 import Foundation
 import Firebase
 import CoreLocation
+import SystemConfiguration
 class GameAccess: NSObject, CLLocationManagerDelegate{
     private var ref = Database.database().reference()
     var locationManager = CLLocationManager()
@@ -24,42 +25,63 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
     var gameCreator = false
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("Updating location")
         let location = locations[0]
         self.updatePlayerLocation(location: location)
     }
 
-    
-    func joinGame(key: String, playerName: String) {
+    func joinGame(key: String, userName: String, completion: (((KeyValidity?, UsernameValidity?)) -> ())?) {
         if self.game == nil {
             ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
                 if let snapshotValue = snapshot.value as? String {
                     self.game = Game(name: snapshotValue)
                     self.game!.id = key
-                    self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-                        self.addPlayer(player: playerName, complete: {() in
-                            if self.userPlayer == nil {
-                                self.game = nil
+                    self.addObservers()
+                    if let complete = completion {
+                        self.addPlayer(player: userName, completion: {(usernameValidity) in
+                            if usernameValidity == UsernameValidity.validUsername {
+                                complete((KeyValidity.validKey, UsernameValidity.validUsername))
                             } else {
-                                self.addObservers()
+                                self.removeObservers()
+                                self.game = nil
+                                complete((KeyValidity.validKey, UsernameValidity.invalidUsername))
                             }
                         })
-                        
-                    })
+                    } else {
+                        self.addPlayer(player: userName, completion: {(usernameValidity) in
+                            if usernameValidity == UsernameValidity.invalidUsername {
+                                self.removeObservers()
+                                self.game = nil
+                                
+                            }
+                        })
+                    }
+                } else {
+                    if let complete = completion {
+                        complete((KeyValidity.invalidKey, nil))
+                    }
                 }
             }
         }
     }
     
+    
+    
     func removePlayer(player: Int) {
         self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
+        self.removeObservers()
+        self.game = nil
+        self.userPlayer = nil
+        self.locationManager.stopUpdatingLocation()
     }
     
-    func createGame(gameName: String, playerName: String) {
+    func createGame(gameName: String, playerName: String, completion: (() -> ())?) {
         if self.game == nil {
             let gameId = ref.childByAutoId().key
             self.ref.child(gameId).child("Name").setValue(gameName)
             self.gameCreator = true
-            self.joinGame(key: gameId, playerName: playerName)
+            //self.joinGame(key: gameId, completion: nil)
+            //addPlayer(player: playerName)
         }
     }
     
@@ -68,6 +90,9 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.ref.child(self.game!.id!).child("Players").child(String(self.userPlayer?.playerNumber as! Int)).child("Location").setValue("\(self.userPlayer!.location!.coordinate.latitude),\(self.userPlayer!.location!.coordinate.longitude)")
     }
     
+    private func removeObservers() {
+        self.ref.child(self.game!.id!).child("Players").removeAllObservers()
+    }
     
     private func addObservers() {
         //Player added
@@ -139,41 +164,48 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.game!.players.append(Player(name: name, playerNumber: Int(snapshot.key)!))
     }
     
-    private func addPlayer(player: String, complete: @escaping () -> ()) {
+    func addPlayer(player: String, completion: ((UsernameValidity) -> ())?) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
-            let players = snapshot.children
-            let playerList = players.allObjects
-            let count = playerList.count
+            let players = snapshot.children.allObjects as! Array<DataSnapshot>
             var counter = 1
-            if count == 0 {
+            if players.count == 0 {
                 self.ref.child(self.game!.id!).child("Players").child("1").child("Name").setValue(player)
                 self.userPlayer = Player(name: player, playerNumber: 1)
                 self.setUpLocationManager()
             } else {
-                for item in playerList {
-                    let tempItem = item as! DataSnapshot
-                    let tempItemList = tempItem.children.allObjects
-                    for item in tempItemList {
-                        let itemSnapshot = item as! DataSnapshot
-                        if itemSnapshot.key == "Name" && itemSnapshot.value as! String == player {
-                            complete()
-                            return
+                for playerFromList in players {
+                    if self.check(playerDataSnapshot: playerFromList, forUsername: player) {
+                        if let complete = completion {
+                            complete(UsernameValidity.invalidUsername)
                         }
-                    }
-                    if counter == count {
-                        let lastPlayerNumber = Int(tempItem.key)!
-                        let playerToAddNumber = lastPlayerNumber + 1
-                    self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).child("Name").setValue(player)
+                        return
+                    } else if counter == players.count {
+                        let playerToAddNumber = Int(playerFromList.key)! + 1
+                        self.ref.child(self.game!.id!).child("Players").child(String(playerToAddNumber)).child("Name").setValue(player)
                         self.userPlayer = Player(name: player, playerNumber: playerToAddNumber)
                         self.setUpLocationManager()
-                        complete()
-                        return
+                        break
                     }
                     counter += 1
                 }
             }
-            
+            if let complete = completion {
+                complete(UsernameValidity.validUsername)
+            }
         }
+    }
+    
+    
+    
+    private func check(playerDataSnapshot: DataSnapshot, forUsername player: String) -> Bool {
+        let playerDataSnapshotList = playerDataSnapshot.children.allObjects
+        for item in playerDataSnapshotList {
+            let itemSnapshot = item as! DataSnapshot
+            if itemSnapshot.key == "Name" && itemSnapshot.value as! String == player {
+                return true
+            }
+        }
+        return false
     }
     
     private func setUpLocationManager() {
