@@ -25,47 +25,32 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
     var gameCreator = false
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Updating location")
         let location = locations[0]
         self.updatePlayerLocation(location: location)
     }
 
-    func joinGame(key: String, userName: String, completion: (((KeyValidity?, UsernameValidity?)) -> ())?) {
+    func joinGame(key: String, userName: String, completion: @escaping (((KeyValidity?, UsernameValidity?)) -> ())) {
         if self.game == nil {
             ref.child(key).child("Name").observeSingleEvent(of: DataEventType.value) { (snapshot) in
                 if let snapshotValue = snapshot.value as? String {
                     self.game = Game(name: snapshotValue)
                     self.game!.id = key
                     self.addObservers()
-                    if let complete = completion {
-                        self.addPlayer(player: userName, completion: {(usernameValidity) in
-                            if usernameValidity == UsernameValidity.validUsername {
-                                complete((KeyValidity.validKey, UsernameValidity.validUsername))
-                            } else {
-                                self.removeObservers()
-                                self.game = nil
-                                complete((KeyValidity.validKey, UsernameValidity.invalidUsername))
-                            }
-                        })
-                    } else {
-                        self.addPlayer(player: userName, completion: {(usernameValidity) in
-                            if usernameValidity == UsernameValidity.invalidUsername {
-                                self.removeObservers()
-                                self.game = nil
-                                
-                            }
-                        })
-                    }
+                    self.addPlayer(player: userName, completion: {(usernameValidity) in
+                        if usernameValidity == UsernameValidity.validUsername {
+                            completion((KeyValidity.validKey, UsernameValidity.validUsername))
+                        } else {
+                            self.removeObservers()
+                            self.game = nil
+                            completion((KeyValidity.validKey, UsernameValidity.invalidUsername))
+                        }
+                    })
                 } else {
-                    if let complete = completion {
-                        complete((KeyValidity.invalidKey, nil))
-                    }
+                    completion((KeyValidity.invalidKey, nil))
                 }
             }
         }
     }
-    
-    
     
     func removePlayer(player: Int) {
         self.ref.child(self.game!.id!).child("Players").child(String(player)).removeValue()
@@ -80,7 +65,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
             let gameId = ref.childByAutoId().key
             self.ref.child(gameId).child("Name").setValue(gameName)
             self.gameCreator = true
-            self.joinGame(key: gameId, userName: playerName, completion: nil)
+            self.joinGame(key: gameId, userName: playerName, completion: {(validity) in return})
         }
     }
     
@@ -102,9 +87,6 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childChanged, with: playerPropertiesObserverCallback(snapshot:))
     }
 
-    
-    
-    
     private func createCLLocation(latitudeAndLogitudeString: String) -> CLLocation {
         var latitude = ""
         var longitude = ""
@@ -120,7 +102,6 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         }
         return CLLocation(latitude: Double(latitude)!, longitude: Double(longitude)!)
     }
-    
     
     //must be used with DataEventType.childRemoved
     private func playerRemovedObserverCallback(snapshot: DataSnapshot) {
@@ -163,7 +144,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.game!.players.append(Player(name: name, playerNumber: Int(snapshot.key)!))
     }
     
-    func addPlayer(player: String, completion: ((UsernameValidity) -> ())?) {
+    private func addPlayer(player: String, completion: @escaping ((UsernameValidity) -> ())) {
         self.ref.child(self.game!.id!).child("Players").observeSingleEvent(of: DataEventType.value) { (snapshot) in
             let players = snapshot.children.allObjects as! Array<DataSnapshot>
             var counter = 1
@@ -174,9 +155,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
             } else {
                 for playerFromList in players {
                     if self.check(playerDataSnapshot: playerFromList, forUsername: player) {
-                        if let complete = completion {
-                            complete(UsernameValidity.invalidUsername)
-                        }
+                        completion(UsernameValidity.invalidUsername)
                         return
                     } else if counter == players.count {
                         let playerToAddNumber = Int(playerFromList.key)! + 1
@@ -188,13 +167,9 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
                     counter += 1
                 }
             }
-            if let complete = completion {
-                complete(UsernameValidity.validUsername)
-            }
+            completion(UsernameValidity.validUsername)
         }
     }
-    
-    
     
     private func check(playerDataSnapshot: DataSnapshot, forUsername player: String) -> Bool {
         let playerDataSnapshotList = playerDataSnapshot.children.allObjects
