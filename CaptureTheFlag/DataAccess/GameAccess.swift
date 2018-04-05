@@ -84,7 +84,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         //Player removed
         self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childRemoved, with: playerRemovedObserverCallback(snapshot:))
         
-        self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childChanged, with: playerPropertiesObserverCallback(snapshot:))
+        self.ref.child(self.game!.id!).child("Players").observe(DataEventType.childChanged, with: playerLocationObserverCallback(snapshot:))
     }
 
     private func createCLLocation(latitudeAndLogitudeString: String) -> CLLocation {
@@ -115,7 +115,7 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
     }
     
     //must be used with DataEventType.childChanged
-    private func playerPropertiesObserverCallback(snapshot: DataSnapshot) {
+    private func playerLocationObserverCallback(snapshot: DataSnapshot) {
         let playerNumber = Int(snapshot.key)
         let listOfChildren = snapshot.children.allObjects
         for item in listOfChildren {
