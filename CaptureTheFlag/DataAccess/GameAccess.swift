@@ -60,12 +60,12 @@ class GameAccess: NSObject, CLLocationManagerDelegate{
         self.locationManager.stopUpdatingLocation()
     }
     
-    func createGame(gameName: String, playerName: String) {
+    func createGame(gameName: String, playerName: String, completion: @escaping () -> ()) {
         if self.game == nil {
             let gameId = ref.childByAutoId().key
             self.ref.child(gameId).child("Name").setValue(gameName)
             self.gameCreator = true
-            self.joinGame(key: gameId, userName: playerName, completion: {(validity) in return})
+            self.joinGame(key: gameId, userName: playerName, completion: {(validity) in completion()})
         }
     }
     
