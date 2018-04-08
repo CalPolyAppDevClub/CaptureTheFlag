@@ -1,7 +1,6 @@
 import Foundation
 
 class Game {
-    
     //var startTime: Date
     //var teamA: Team
     //var teamB: Team
@@ -17,7 +16,16 @@ class Game {
     }
     
     func addPlayer(playerName: String, number: Int) {
-        var playerToAdd = Player(name: playerName, playerNumber: number)
+        let playerToAdd = Player(name: playerName, playerNumber: number)
         players.append(playerToAdd)
+    }
+    
+    func getPlayerForNumber(playerNumber: Int) -> Player? {
+        for player in players {
+            if player.playerNumber == playerNumber {
+                return player
+            }
+        }
+        return nil
     }
 }

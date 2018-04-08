@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import CoreLocation
 
 class CaptureTheFlagViewController: UIViewController {
-    var firebaseAccess: FirebaseAccess!
+    var gameAccess: GameAccess!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,19 +24,8 @@ class CaptureTheFlagViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nextViewController = segue.destination as? CaptureTheFlagViewController {
-            nextViewController.firebaseAccess = self.firebaseAccess
+            nextViewController.gameAccess = self.gameAccess
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

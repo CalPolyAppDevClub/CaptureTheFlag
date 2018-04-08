@@ -1,15 +1,18 @@
 import Foundation
+import CoreLocation
 
-class Player: Hashable, CustomStringConvertible {
+class Player: Hashable, CustomStringConvertible, Equatable {
     //The Hashable protocol allows Player to be a key in a dictionary.
     
     var hashValue: Int //part of the Hashable protocol
     
     var name: String //the name of the player
     //var photo: URL? //the URL for the player's photo
-    var location: GameLocation? //the location of the player. Nil if unknown.
+    //var location: GameLocation? //the location of the player. Nil if unknown.
     //var hasFlag: Bool = false
     let playerNumber: Int
+    var hasFlag = false
+    var location: CLLocation?
 
     //init(name: String, photo: URL?) {
        // self.name = name
@@ -29,8 +32,7 @@ class Player: Hashable, CustomStringConvertible {
         return "\(String(self.playerNumber)) \(self.name) "
     }
     
-    static func ==(lhs: Player, rhs: Player) -> Bool {
-        //TODO: implement
-        return false
+    static func ==(player1: Player, player2: Player) -> Bool {
+        return player1.name == player2.name && player1.playerNumber == player2.playerNumber
     }
 }
