@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03F4F7802043549C00E8963F /* GoogleService-Info.plist */; };
-		458B4A322055CD5900D64D00 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */; };
-		45F8E9BA205874CB00E88BC6 /* TeamNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */; };
 		45F8E9BC2058766600E88BC6 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */; };
 		45F8E9BE2058788400E88BC6 /* GameLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E9BD2058788400E88BC6 /* GameLobbyViewController.swift */; };
+		6B0EF482207A9CEE00C5DB4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EF481207A9CEE00C5DB4B /* GoogleService-Info.plist */; };
 		6BEC9A7920360BCC003A1296 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7820360BCC003A1296 /* AppDelegate.swift */; };
 		6BEC9A7B20360BCC003A1296 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7A20360BCC003A1296 /* ViewController.swift */; };
 		6BEC9A7E20360BCC003A1296 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BEC9A7C20360BCC003A1296 /* Main.storyboard */; };
@@ -27,12 +25,8 @@
 		6E2EC7BB1DECA937F9326FB1 /* Pods_CaptureTheFlag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 158392B9CBDEA7DAD8DEC41C /* Pods_CaptureTheFlag.framework */; };
 		AB0113CD207359EE00E9D169 /* KeyValidity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0113CC207359EE00E9D169 /* KeyValidity.swift */; };
 		AB0113CF20735C9100E9D169 /* UsernameValidity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0113CE20735C9100E9D169 /* UsernameValidity.swift */; };
-		AB0BEA79206EC9F2000457C3 /* RealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0BEA78206EC9F2000457C3 /* RealViewController.swift */; };
-		AB0BEA7B206ECD1E000457C3 /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0BEA7A206ECD1E000457C3 /* JoinViewController.swift */; };
-		AB6BDF97205E5EF90004756A /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6BDF96205E5EF90004756A /* Storyboard.storyboard */; };
 		AB84CFB82055BEA300B84764 /* CaptureTheFlagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84CFB72055BEA300B84764 /* CaptureTheFlagViewController.swift */; };
 		AB95431E20434BC400E8B4EB /* GameAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB95431D20434BC400E8B4EB /* GameAccess.swift */; };
-		ABAE916A206E9E5F00029DE7 /* TheTestStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABAE9169206E9E5F00029DE7 /* TheTestStoryboard.storyboard */; };
 		ABB8DCB79176121986F1BF69 /* Pods_CaptureTheFlagTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9EA6B4F379DCAC5A26CB06 /* Pods_CaptureTheFlagTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,13 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03F4F7802043549C00E8963F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		158392B9CBDEA7DAD8DEC41C /* Pods_CaptureTheFlag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9EA6B4F379DCAC5A26CB06 /* Pods_CaptureTheFlagTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CaptureTheFlagTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = ../../Desktop/google_signin_sdk_4_1_2/GoogleSignIn.bundle; sourceTree = "<group>"; };
 		45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamNameViewController.swift; sourceTree = "<group>"; };
 		45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
 		45F8E9BD2058788400E88BC6 /* GameLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLobbyViewController.swift; sourceTree = "<group>"; };
+		6B0EF481207A9CEE00C5DB4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6BEC9A7520360BCC003A1296 /* CaptureTheFlag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaptureTheFlag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BEC9A7820360BCC003A1296 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6BEC9A7A20360BCC003A1296 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,12 +66,8 @@
 		90C24D81E3E6DFC7EEDF31FC /* Pods-CaptureTheFlagTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlagTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlagTests/Pods-CaptureTheFlagTests.release.xcconfig"; sourceTree = "<group>"; };
 		AB0113CC207359EE00E9D169 /* KeyValidity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValidity.swift; sourceTree = "<group>"; };
 		AB0113CE20735C9100E9D169 /* UsernameValidity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameValidity.swift; sourceTree = "<group>"; };
-		AB0BEA78206EC9F2000457C3 /* RealViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealViewController.swift; sourceTree = "<group>"; };
-		AB0BEA7A206ECD1E000457C3 /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
-		AB6BDF96205E5EF90004756A /* Storyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		AB84CFB72055BEA300B84764 /* CaptureTheFlagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureTheFlagViewController.swift; sourceTree = "<group>"; };
 		AB95431D20434BC400E8B4EB /* GameAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAccess.swift; sourceTree = "<group>"; };
-		ABAE9169206E9E5F00029DE7 /* TheTestStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TheTestStoryboard.storyboard; sourceTree = "<group>"; };
 		B7C5F2095690C496434BD146 /* Pods-CaptureTheFlag.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlag.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag.debug.xcconfig"; sourceTree = "<group>"; };
 		D0116F43C1EE084FC1EF4C21 /* Pods-CaptureTheFlag.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlag.release.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlag/Pods-CaptureTheFlag.release.xcconfig"; sourceTree = "<group>"; };
 		EDA71290BF306CBC669021FD /* Pods-CaptureTheFlagTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CaptureTheFlagTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CaptureTheFlagTests/Pods-CaptureTheFlagTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -127,8 +116,7 @@
 		6BEC9A6C20360BCC003A1296 = {
 			isa = PBXGroup;
 			children = (
-				458B4A312055CD5900D64D00 /* GoogleSignIn.bundle */,
-				03F4F7802043549C00E8963F /* GoogleService-Info.plist */,
+				6B0EF481207A9CEE00C5DB4B /* GoogleService-Info.plist */,
 				6BEC9A7720360BCC003A1296 /* CaptureTheFlag */,
 				6BEC9A8C20360BCC003A1296 /* CaptureTheFlagTests */,
 				6BEC9A7620360BCC003A1296 /* Products */,
@@ -157,11 +145,7 @@
 				45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */,
 				45F8E9B9205874CB00E88BC6 /* TeamNameViewController.swift */,
 				6BEC9A7A20360BCC003A1296 /* ViewController.swift */,
-				AB0BEA78206EC9F2000457C3 /* RealViewController.swift */,
-				AB0BEA7A206ECD1E000457C3 /* JoinViewController.swift */,
-				ABAE9169206E9E5F00029DE7 /* TheTestStoryboard.storyboard */,
 				6BEC9A7C20360BCC003A1296 /* Main.storyboard */,
-				AB6BDF96205E5EF90004756A /* Storyboard.storyboard */,
 				6BEC9A7F20360BCC003A1296 /* Assets.xcassets */,
 				6BEC9A8120360BCC003A1296 /* LaunchScreen.storyboard */,
 				6BEC9A8420360BCC003A1296 /* Info.plist */,
@@ -290,13 +274,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				458B4A322055CD5900D64D00 /* GoogleSignIn.bundle in Resources */,
 				6BEC9A8320360BCC003A1296 /* LaunchScreen.storyboard in Resources */,
-				03F4F7812043549D00E8963F /* GoogleService-Info.plist in Resources */,
+				6B0EF482207A9CEE00C5DB4B /* GoogleService-Info.plist in Resources */,
 				6BEC9A8020360BCC003A1296 /* Assets.xcassets in Resources */,
-				ABAE916A206E9E5F00029DE7 /* TheTestStoryboard.storyboard in Resources */,
 				6BEC9A7E20360BCC003A1296 /* Main.storyboard in Resources */,
-				AB6BDF97205E5EF90004756A /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,7 +339,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E37D9D88E66BE7F2D7346A8A /* [CP] Embed Pods Frameworks */ = {
@@ -417,7 +398,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -438,10 +419,8 @@
 				AB84CFB82055BEA300B84764 /* CaptureTheFlagViewController.swift in Sources */,
 				6BEC9AA820360D5D003A1296 /* GameLobby.swift in Sources */,
 				6BEC9AA220360C60003A1296 /* Flag.swift in Sources */,
-				AB0BEA79206EC9F2000457C3 /* RealViewController.swift in Sources */,
 				6BEC9A7B20360BCC003A1296 /* ViewController.swift in Sources */,
 				AB0113CF20735C9100E9D169 /* UsernameValidity.swift in Sources */,
-				AB0BEA7B206ECD1E000457C3 /* JoinViewController.swift in Sources */,
 				6BEC9A7920360BCC003A1296 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -597,10 +576,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8T24Q268PE;
+				DEVELOPMENT_TEAM = QH4RJ755GR;
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.CaptureTheFlag;
+				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.ctf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -613,11 +592,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8T24Q268PE;
+				DEVELOPMENT_TEAM = QH4RJ755GR;
 				INFOPLIST_FILE = CaptureTheFlag/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "ethanarigil56-gmail.com";
-				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.CaptureTheFlag;
+				PRODUCT_BUNDLE_IDENTIFIER = club.polyappdev.ctf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -6,7 +6,7 @@ class Flag {
         get
         {
             if let player = heldBy {
-                return player.location
+                return home
             }
             else {
                 return home
