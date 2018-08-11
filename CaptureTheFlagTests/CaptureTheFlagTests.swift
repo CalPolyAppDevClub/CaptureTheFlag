@@ -21,9 +21,37 @@ class CaptureTheFlagTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testGetPlayers() {
+        class MockRequestResponse: AsyncRequestResponse {
+            func sendMessage(command: String, payLoad: Any?, callback: ((Any?, ARRError?) -> ())?) {
+                callback!(["error": "gameDoesNotExist"], nil)
+            }
+            
+            func addListener(for: String, callback: @escaping (Any?) -> ()) -> ListenerKey {
+                let flagDict: Dictionary<String, Any> = [
+                    "teamId":4,
+                    "flag":[
+                        "id": "3",
+                        "location": [
+                            "latitude":"53748653453",
+                            "longitude":"5346834756"
+                        ]
+                    ]
+                    
+                ]
+                callback(flagDict)
+                return ListenerKey(command: "", key: UUID())
+            }
+            
+            func removeListener(listenerKey: ListenerKey) {
+                
+            }
+        }
+        let serverAccess = ServerAccess(requestResponse:MockRequestResponse())
+        serverAccess.addFlagAddedListener(callback: {(flag, teamId) in
+            print(flag)
+            XCTAssert(flag.id == "3")
+        })
     }
     
     func testPerformanceExample() {
