@@ -7,29 +7,64 @@
 //
 
 import UIKit
+import SwiftWebSocket
+import CoreLocation
 
-class JoinGameViewController: UIViewController {
-
+class JoinGameViewController: CaptureTheFlagViewController{
+    @IBOutlet weak var taggedView: UITextView!
+    @IBOutlet weak var createGameButton: UIButton!
+    @IBOutlet weak var success: UITextView!
+    @IBOutlet weak var gameKeyText: UITextField!
+    @IBOutlet weak var usernameText: UITextField!
+    var id = ""
+    var locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+    
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func joinGame(_ sender: Any) {
+       self.serverAccess!.joinGame(key: gameKeyText.text!, playerName: usernameText.text!, callback: {[unowned self] (error) in
+        if error != nil {
+            self.handleError(error: error!)
+        } else {
+            self.serverAccess!.getGameState(callback: {[unowned self](state, error) in
+                print("STATE: \(state)")
+                if error != nil {
+                    
+                } else {
+                    switch state {
+                    case 0:
+                        self.performSegue(withIdentifier: "fromJoinToLobby", sender: nil)
+                    default:
+                        print("HEllo")
+                    }
+                }
+            })
+        }
+       })
     }
-    */
-
+    
+    private func handleError(error: GameError){
+        switch error {
+        case GameError.serverError:
+            break
+            //TODO: perform segue to error viewcontroller
+        case GameError.gameDoesNotExist:
+            self.success.text = "Invalid Game Key"
+        default:
+            break
+        }
+    }
+    
+    deinit {
+        print("joinGameViewDeinit")
+    }
 }
+
