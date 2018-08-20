@@ -25,6 +25,7 @@
 		AB6E607D20D7275C000186CC /* ServerPointErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E607C20D7275C000186CC /* ServerPointErrors.swift */; };
 		AB6E607F20D8CFAA000186CC /* PointError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6E607E20D8CFAA000186CC /* PointError.swift */; };
 		AB782AFE20AEAE1F00B82F8D /* ListenerKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB782AFD20AEAE1F00B82F8D /* ListenerKey.swift */; };
+		AB8089E7212A716C0032F5B0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8089E6212A716C0032F5B0 /* LoginViewController.swift */; };
 		AB84CFB82055BEA300B84764 /* CaptureTheFlagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB84CFB72055BEA300B84764 /* CaptureTheFlagViewController.swift */; };
 		AB8F1C662095133700FC40FA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8F1C652095133700FC40FA /* File.swift */; };
 		ABA9ECF020C47EF600873A22 /* GameLobbyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA9ECEF20C47EF600873A22 /* GameLobbyCell.swift */; };
@@ -77,6 +78,7 @@
 		AB6E607C20D7275C000186CC /* ServerPointErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPointErrors.swift; sourceTree = "<group>"; };
 		AB6E607E20D8CFAA000186CC /* PointError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointError.swift; sourceTree = "<group>"; };
 		AB782AFD20AEAE1F00B82F8D /* ListenerKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerKey.swift; sourceTree = "<group>"; };
+		AB8089E6212A716C0032F5B0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		AB84CFB72055BEA300B84764 /* CaptureTheFlagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureTheFlagViewController.swift; sourceTree = "<group>"; };
 		AB8F1C652095133700FC40FA /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		ABA9ECEF20C47EF600873A22 /* GameLobbyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLobbyCell.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				ABA9ECEF20C47EF600873A22 /* GameLobbyCell.swift */,
 				ABF8B4E820BA37D700F72D41 /* MapFlagPlacementViewController.swift */,
 				45F8E9BB2058766600E88BC6 /* JoinGameViewController.swift */,
+				AB8089E6212A716C0032F5B0 /* LoginViewController.swift */,
 				ABDB395220CBB86E00D59923 /* FirstViewController.swift */,
 				ABE421B320C368BC006C5166 /* CreateGameViewController.swift */,
 				AB8F1C652095133700FC40FA /* File.swift */,
@@ -193,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				AB2D3CAC20A63E5B00A2703B /* ServerPoint.swift */,
+				AB63600C2111622000C273E6 /* asyncRequestResponse.swift */,
 				AB6E607E20D8CFAA000186CC /* PointError.swift */,
 				AB0429BD20A6DA05003D1BD0 /* Message.swift */,
 				AB782AFD20AEAE1F00B82F8D /* ListenerKey.swift */,
@@ -213,7 +217,6 @@
 				6BEC9A9E20360C60003A1296 /* Player.swift */,
 				6BEC9A9920360C60003A1296 /* Team.swift */,
 				ABC67087210EB59700F2408F /* Location.swift */,
-				AB63600C2111622000C273E6 /* asyncRequestResponse.swift */,
 			);
 			path = DataAccess;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				ABE43CBE207C46470076F75B /* FlagLocationChangeDelegate.swift in Sources */,
 				6BEC9AA220360C60003A1296 /* Flag.swift in Sources */,
 				ABC67086210D7BF300F2408F /* Moveable.swift in Sources */,
+				AB8089E7212A716C0032F5B0 /* LoginViewController.swift in Sources */,
 				6BEC9A7920360BCC003A1296 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

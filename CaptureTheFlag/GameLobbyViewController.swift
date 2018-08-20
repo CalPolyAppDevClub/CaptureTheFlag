@@ -27,10 +27,8 @@ class GameLobbyViewController: CaptureTheFlagViewController, UITableViewDelegate
             }
             for player in players! {
                 self.players[player.id] = player
-                
             }
             self.serverAccess!.getTeams(callback: {(teams, error) in
-                print("THESE ARE THE TEAMS: \(teams?.description)")
                 if teams != nil {
                     for team in teams! {
                         self.teams[team.id] = team
@@ -46,7 +44,6 @@ class GameLobbyViewController: CaptureTheFlagViewController, UITableViewDelegate
         })
         
         self.createListeners()
-        
     }
 
 
@@ -137,14 +134,15 @@ class GameLobbyViewController: CaptureTheFlagViewController, UITableViewDelegate
                 self.tableView.reloadData()
         }))
         
-        self.listenerKeys.append(self.serverAccess!.addGameStateChangedListener(callback: {(gameState) in
-            if gameState == 1 {
-                self.removeListeners()
-                self.performSegue(withIdentifier: "toMapView", sender: nil)
-            } else {
-                //TODO go to something went wrong view controller
-            }
-        }))
+        self.listenerKeys.append(
+            self.serverAccess!.addGameStateChangedListener(callback: {(gameState) in
+                if gameState == 1 {
+                    self.removeListeners()
+                    self.performSegue(withIdentifier: "toMapView", sender: nil)
+                } else {
+                    //TODO go to something went wrong view controller
+                }
+            }))
     }
     
     private func removeListeners() {

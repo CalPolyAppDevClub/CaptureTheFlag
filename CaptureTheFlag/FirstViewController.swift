@@ -9,7 +9,6 @@
 import UIKit
 
 class FirstViewController: CaptureTheFlagViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,8 +21,10 @@ class FirstViewController: CaptureTheFlagViewController {
         
     }
     
-    //capture-the-flag-server.herokuapp.com/
-    //192.168.86.63:8000
+    
+    @IBAction func login(_ sender: Any) {
+        setUPWSRR()
+    }
     
     @IBAction func JoinGame(_ sender: Any) {
         setUPWSRR()
@@ -35,7 +36,7 @@ class FirstViewController: CaptureTheFlagViewController {
     
     
     private func setUPWSRR() {
-        let RRManager = WebSocketRequestResponse(address: "ws://192.168.86.63:8000", additionalHTTPHeaders: ["Authorization" : "AUTH-TOKEN"])
+        let RRManager = WebSocketRequestResponse()
         self.serverAccess = ServerAccess(requestResponse: RRManager)
     }
     

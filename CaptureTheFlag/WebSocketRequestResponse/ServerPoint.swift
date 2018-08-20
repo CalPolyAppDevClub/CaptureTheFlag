@@ -5,43 +5,52 @@ public class WebSocketRequestResponse: AsyncRequestResponse {
     
     private var responseListeners = Dictionary<UUID, (Message) -> ()>()
     private var listeners = [String : Dictionary<UUID, (Message) -> ()>]()
-    private var socket: WebSocket
-    private var timer: Timer?
+    private var socket: WebSocket?
+    private var pingTimer: Timer? = nil
+    private var pongTimer: Timer? = nil
+    private var reconnectKey: String? = nil
+    public var onReconnect: (() -> ())?
+    private var serverUrl: String?
     
-    init(address: String, additionalHTTPHeaders: Dictionary<String, String>) {
-        var request = URLRequest(url: URL(string: address)!)
-        for key in additionalHTTPHeaders.keys {
-            request.addValue(additionalHTTPHeaders[key]!, forHTTPHeaderField: key)
-        }
-        self.socket = WebSocket(request: request)
-        socket.event.error = {error in
+    
+    init() {
+        
+        self.socket = WebSocket()
+        
+        socket?.event.error = {error in
             print(type(of: error))
             print(error)
         }
         
-        DispatchQueue.main.async {
-            self.timer = Timer.scheduledTimer(withTimeInterval: 500, repeats: true, block: {(timer) in
-                self.socket.ping()
-            })
+        socket?.event.close = { (int, string, bool) in
+            print("websocket closed")
         }
         
-        
-        socket.event.pong = {data in
+        socket?.event.pong = {data in
+            self.stopPongTimer()
             print("has been ponged: \(data)")
         }
         //RunLoop.
-        socket.event.message = {msg in
+        socket?.event.message = {msg in
             if (type(of: msg) == type(of: [UInt8]())) {
                 let incomingData = Data(msg as! [UInt8])
                 let rawJSON = try! JSONSerialization.jsonObject(with: incomingData, options: []) as! [String: Any]
                 let message = Message(dict: rawJSON)
-                
                 if message == nil {
-                    
+                    print("invalid incoming message")
                 } else {
                     self.proccessIncomingMessage(message: message!)
                 }
-                
+                return
+            }
+            let msgAsString = msg as! String
+            if msgAsString == "connected" {
+                self.onReconnect?()
+                return
+            }
+            let msgData = try! JSONSerialization.jsonObject(with: msgAsString.data(using: .utf8)!, options: []) as? [String:String]
+            if let reconnectId = msgData?["RECONNECTID"] {
+                self.reconnectKey = reconnectId
             } else {
                 let msgDataString = msg as! String
                 let msgData = try! JSONSerialization.jsonObject(with: msgDataString.data(using: .utf8)!, options: []) as! [String : Any]
@@ -55,13 +64,43 @@ public class WebSocketRequestResponse: AsyncRequestResponse {
         }
     }
     
+    private func startReconnectTimers() {
+        pingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true, block: {(timer) in
+            //self.socket = nil
+            self.socket?.ping()
+            self.startPongTimer(seconds: 3)
+        })
+    }
+    
+    func open(address: String, additionalHTTPHeaders: Dictionary<String, String>) {
+        print("URL: \(address)")
+        self.serverUrl = address
+        print()
+        var request = URLRequest(url: URL(string: address)!)
+        for key in additionalHTTPHeaders.keys {
+            request.addValue(additionalHTTPHeaders[key]!, forHTTPHeaderField: key)
+        }
+        self.socket?.open(request: request)
+        print("grgreerg")
+    }
+    
+    func open(address: String) {
+        self.serverUrl = address
+        var request = URLRequest(url: URL(string: address)!)
+        self.socket?.open(request: request)
+        //self.startReconnectTimers()
+    }
+    
+    
     private func proccessIncomingMessage(message: Message) {
         //print(message)
         if message.command == nil {
+            print(message)
             let listener = self.responseListeners[UUID(uuidString: message.key!)!]!
             listener(message)
             self.responseListeners.removeValue(forKey: UUID(uuidString: message.key!)!)
         } else {
+            print(message)
             if self.listeners[message.command!] != nil {
                 for listener in (self.listeners[(message.command)!]?.values)! {
                     listener(message)
@@ -70,12 +109,38 @@ public class WebSocketRequestResponse: AsyncRequestResponse {
         }
     }
     
-    private func reconnect() {
-        socket.close()
-        socket.send(Message(command: "RECONNECT", key: nil, data: nil, error: nil))
+    func startPongTimer(seconds: Double) {
+        print("starting the pong timer")
+        self.pongTimer = Timer.scheduledTimer(withTimeInterval: seconds, repeats: false, block: {(timer) in
+            self.initiateReconnect()
+        })
+    }
+    
+    
+    
+    private func stopPongTimer() {
+        print("stopping the pong timer")
+        self.pongTimer?.invalidate()
+        self.pongTimer = nil
+    }
+    
+    private func initiateReconnect() {
+        print("initiating reconnect")
+        //self.pingTimer?.invalidate()
+        //self.pingTimer = nil
+        print("closing the socket")
+        self.socket?.close()
+        var request = URLRequest(url: URL(string: self.serverUrl!)!)
+        request.addValue(self.reconnectKey!, forHTTPHeaderField: "reconnect")
+        self.socket?.open(request: request)
+    }
+    
+    func close() {
+        self.socket?.close()
     }
     
     func sendMessage(command: String, payLoad: Any?, callback: ((Any?, ARRError?) -> ())?) {
+        print("send message is being called: \(command)")
         let key = UUID()
         let message = Message(command: command, key: key.uuidString, data: payLoad, error: nil)
         if callback != nil {
@@ -86,7 +151,8 @@ public class WebSocketRequestResponse: AsyncRequestResponse {
         }
         let messageAsDictionary = message.asDictionary()
         let messageToSend = try! JSONSerialization.data(withJSONObject: messageAsDictionary, options: [])
-        socket.send(messageToSend)
+        //self.socket?.send(messageToSend)
+        self.socket!.send(messageToSend)
     }
     
     func addListener(for command: String, callback: @escaping(Any?) -> ()) -> ListenerKey {

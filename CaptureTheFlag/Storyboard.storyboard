@@ -35,14 +35,84 @@
                                     <segue destination="Bwi-To-H6d" kind="show" id="vE9-8l-sMw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9Z-5r-M41">
+                                <rect key="frame" x="168" y="122" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="login:" destination="Zzb-CU-C3I" eventType="touchUpInside" id="sag-t2-e1K"/>
+                                    <segue destination="UsH-F8-5pn" kind="show" id="n1P-BM-p7Q"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="B5T-6H-jk3"/>
                     </view>
+                    <connections>
+                        <segue destination="UsH-F8-5pn" kind="show" identifier="loginSegue" id="14p-ae-15J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLw-d3-rpt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1775.2" y="1406.4467766116943"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="5tX-RQ-Edg">
+            <objects>
+                <viewController id="UsH-F8-5pn" customClass="LoginViewController" customModule="CaptureTheFlag" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Twc-3c-Dwe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Username" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="m2u-YH-xcE">
+                                <rect key="frame" x="67" y="34" width="87" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Password" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IM5-JY-3JC">
+                                <rect key="frame" x="67" y="66" width="83" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IBe-4n-l5U">
+                                <rect key="frame" x="158" y="41" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HdZ-KX-bfu">
+                                <rect key="frame" x="151" y="79" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j9R-aG-qLH">
+                                <rect key="frame" x="155" y="142" width="66" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="login:" destination="UsH-F8-5pn" eventType="touchUpInside" id="LDT-jH-gPg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="05S-0B-trv"/>
+                    </view>
+                    <connections>
+                        <outlet property="passwordText" destination="HdZ-KX-bfu" id="Y3E-cg-8CV"/>
+                        <outlet property="usernameText" destination="IBe-4n-l5U" id="cr5-V0-TaI"/>
+                        <segue destination="Zzb-CU-C3I" kind="show" identifier="backToMainSegue" id="mEN-Tm-uUY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgF-hB-hT7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1775" y="2335"/>
         </scene>
         <!--Join Game View Controller-->
         <scene sceneID="JFa-QW-TRw">
@@ -110,7 +180,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lq0-x2-fzQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-513" y="1359"/>
+            <point key="canvasLocation" x="-514" y="1787"/>
         </scene>
         <!--Create Game View Controller-->
         <scene sceneID="iWG-Xq-ZGg">
@@ -171,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hrd-Yu-atF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1321" y="611"/>
+            <point key="canvasLocation" x="-514" y="1076"/>
         </scene>
         <!--Map Flag Placement View Controller-->
         <scene sceneID="FHX-Sl-fRe">
@@ -219,7 +289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PdO-0I-Jme" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1624.8" y="1118.5907046476761"/>
+            <point key="canvasLocation" x="1956" y="1406"/>
         </scene>
         <!--Create Game View Controller-->
         <scene sceneID="Dal-Qh-nlC">
@@ -262,7 +332,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SS9-So-gf6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="402" y="392"/>
+            <point key="canvasLocation" x="-1810" y="572"/>
         </scene>
         <!--Game Lobby View Controller-->
         <scene sceneID="cIk-8y-jQw">
@@ -391,7 +461,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Szt-Fi-JBY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="725.60000000000002" y="1105.9970014992505"/>
+            <point key="canvasLocation" x="730" y="1406"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Kwh-ie-ut3">
@@ -406,10 +476,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UBc-Cw-U9A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2793" y="1077"/>
+            <point key="canvasLocation" x="284" y="486"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="4Gc-yf-XD7"/>
+        <segue reference="ilC-kH-CmH"/>
+        <segue reference="14p-ae-15J"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -46,8 +46,7 @@ import CoreLocation
 
 
 
-class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationManagerDelegate, UIGestureRecognizerDelegate, MKMapViewDelegate {
-    
+class MapFlagPlacementViewController: CaptureTheFlagViewController, UIGestureRecognizerDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var startGameButton: UIButton!
     @IBOutlet weak var map: MKMapView!
     var players = [String:Player]()
@@ -55,7 +54,7 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
     var flags = [String:Flag]()
     var userPlayer: Player?
     
-    var mapAnnotations = [String:MKAnnotation]()
+    var playerAnnotations = [String:MKAnnotation]()
     var flagAnnotations = [String:MKAnnotation]()
     
     var listenerKeys = [GameListenerKey]()
@@ -66,106 +65,40 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
         super.viewDidLoad()
         self.setUpLocation()
         self.map.delegate = self
-        if self.players.count == 0 {
-            self.serverAccess?.getPlayers(callback: {(players, error) in
+        self.serverAccess?.onReconnect = {
+            self.serverAccess?.getCurrentGameState(callback: {(playersFlagsTeams, error) in
                 if error != nil {
                     self.handleError(error!)
                 } else {
-                    for player in players! {
-                        self.players[player.id] = player
-                    }
+                    let players = playersFlagsTeams?.0
+                    let flags = playersFlagsTeams?.1
+                    let teams = playersFlagsTeams?.2
+                    self.updateData(players: players!, flags: flags!, teams: teams!)
+                    self.reloadMap()
                 }
-                self.serverAccess?.getTeams(callback: {(teams, error) in
-                    if error != nil {
-                        self.handleError(error!)
-                    } else {
-                        for team in teams! {
-                            self.teams[team.id] = team
-                        }
-                    }
-                    for player in self.players.values {
-                        if player.location != nil {
-                            var playerTeamId: Int?
-                            if self.teams[1]!.contians(playerId: player.id) {
-                                playerTeamId = 1
-                            } else {
-                                playerTeamId = 2
-                            }
-                            self.addToMap(player: player)
-                        }
-                    }
-                    self.serverAccess?.getFlags(callback: {(flags, error) in
+            })
+        }
+        if self.players.count == 0 {
+            self.serverAccess?.getCurrentGameState(callback: {(playersFlagsTeams, error) in
+                if error != nil {
+                    self.handleError(error!)
+                } else {
+                    let players = playersFlagsTeams?.0
+                    let flags = playersFlagsTeams?.1
+                    let teams = playersFlagsTeams?.2
+                    self.updateData(players: players!, flags: flags!, teams: teams!)
+                    self.reloadMap()
+                    self.serverAccess?.getPlayerGameInfo(callback: {(player, error) in
                         if error != nil {
                             self.handleError(error!)
                         } else {
-                            for flag in flags! {
-                                self.flags[flag.id] = flag
-                                var flagTeamId: Int?
-                                if self.teams[1]!.contains(flagId: flag.id) {
-                                    flagTeamId = 1
-                                } else {
-                                    flagTeamId = 2
-                                }
-                                self.addToMap(flag: flag)
-                            }
+                            self.userPlayer = self.players[player!.id]
                         }
-                        self.serverAccess?.getPlayerGameInfo(callback: {(player, error) in
-                            print("SELF PLAYER \(player)")
-                            if error != nil {
-                                print("THERE WAS AN ERROR GETTING THE USER PLAYER")
-                                self.handleError(error!)
-                            } else {
-                                self.userPlayer = self.players[player!.id]
-                                if self.userPlayer!.leader != true {
-                                    print("SHOULD BE CHANGING THE COLOR OF THE BUTTON TO GRAY")
-                                    self.startGameButton.setTitleColor(UIColor.gray, for: UIControlState.disabled)
-                                }
-                            }
-                            self.serverAccess?.addLocationListener(callback: {(playerId, location) in
-                                if let player = self.players[playerId] {
-                                    player.location = location
-                                    if let annotation = self.mapAnnotations[player.id] {
-                                        self.mapAnnotations.removeValue(forKey: playerId)
-                                        self.map?.removeAnnotation(annotation)
-                                    }
-                                    self.addToMap(player: player)
-                                }
-                            })
-                        })
-                        
                     })
-                    
-                })
-                
+                }
             })
         }
-        self.serverAccess?.addFlagAddedListener(callback: {(flag, teamIdOfFlag) in
-            self.flags[flag.id] = flag
-            self.teams[teamIdOfFlag]?.addFlag(id: flag.id)
-            self.addToMap(flag: flag)
-        })
-        
-        self.serverAccess?.addGameStateChangedListener(callback: {(gameState) in
-            print("New game state: \(gameState)")
-        })
-        
-        self.serverAccess?.addPlayerTaggedListener(callback: {(playerId, flagHeldLocation) in
-            let player = self.players[playerId]!
-            player.isTagged = true
-            if let flagHeldId = player.flagHeld {
-                player.flagHeld = nil
-                self.flags[flagHeldId]!.held = false
-                self.flags[flagHeldId]!.location = flagHeldLocation!
-                self.addToMap(flag: self.flags[flagHeldId]!)
-            }
-        })
-        
-        self.serverAccess?.addFlagPickedUpListener(callback: {(flagId, playerId) in
-            self.flags[flagId]!.held = true
-            self.players[playerId]!.flagHeld = flagId
-            self.map.removeAnnotation(self.flagAnnotations[flagId]!)
-        })
-        
+        self.createListeners()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createFlag(gestureRecognizer:)))
         self.map?.addGestureRecognizer(tapGesture)
     }
@@ -229,7 +162,7 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
         } else if let flagAnnotation = view.annotation! as? FlagAnnotation {
             self.serverAccess?.pickUpFlag(flagId: flagAnnotation.flagId, callback: {(error) in
                 if error != nil {
-                    print("Tagging: \(error)")
+                    print("Tagging: \(error!)")
                     self.handleError(error!)
                 }
             })
@@ -240,26 +173,59 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
         
     }
     
-    
-    
-    func addToMap(player: Player) {
-        let playerLocation = player.location
-        let coordinate = CLLocationCoordinate2D(latitude: Double(playerLocation!.latitude)!, longitude: Double(playerLocation!.longitude)!)
-        var teamName = "no team"
-        var teamId: Int?
-        for team in teams.values {
-            if team.contians(playerId: player.id) {
-                teamName = team.name
-                teamId = team.id
-                break
-            }
+    private func updateData(players: [Player], flags: [Flag], teams: [Team]) {
+        self.players.removeAll()
+        self.flags.removeAll()
+        self.teams.removeAll()
+        for player in players {
+            self.players[player.id] = player
         }
-        let annotation = PlayerAnnotaton(coordinate: coordinate, title: player.name, subtitle: teamName, team: teamId!, playerId: player.id)
-        self.mapAnnotations[player.id] = annotation
-        self.map?.addAnnotation(annotation)
+        for flag in flags {
+            self.flags[flag.id] = flag
+        }
+        for team in teams {
+            self.teams[team.id] = team
+        }
     }
     
-    func addToMap(flag: Flag) {
+    private func reloadMap() {
+        for (_, player) in self.players {
+            if let playerAnnotation = self.playerAnnotations[player.id] {
+                self.map.removeAnnotation(playerAnnotation)
+                self.playerAnnotations.removeValue(forKey: player.id)
+            }
+            self.addToMap(player: player)
+        }
+        for (_, flag) in self.flags {
+            if let flagAnnotation = self.flagAnnotations[flag.id] {
+                self.map.removeAnnotation(flagAnnotation)
+                self.flagAnnotations.removeValue(forKey: flag.id)
+            }
+            self.addToMap(flag: flag)
+        }
+    }
+    
+    
+    
+    private func addToMap(player: Player) {
+        if let playerLocation = player.location {
+            let coordinate = CLLocationCoordinate2D(latitude: Double(playerLocation.latitude)!, longitude: Double(playerLocation.longitude)!)
+            var teamName = "no team"
+            var teamId: Int?
+            for team in teams.values {
+                if team.contians(playerId: player.id) {
+                    teamName = team.name
+                    teamId = team.id
+                    break
+                }
+            }
+            let annotation = PlayerAnnotaton(coordinate: coordinate, title: player.name, subtitle: teamName, team: teamId!, playerId: player.id)
+            self.playerAnnotations[player.id] = annotation
+            self.map?.addAnnotation(annotation)
+        }
+    }
+    
+    private func addToMap(flag: Flag) {
         let flagLocation = flag.location
         let coordinate = CLLocationCoordinate2D(latitude: Double(flagLocation!.latitude)!, longitude: Double(flagLocation!.longitude)!)
         var teamName = "no team"
@@ -285,15 +251,56 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
         })
     }
     
+    private func createListeners() {
+        let listenerArray: [GameListenerKey] = [
+            (self.serverAccess?.addLocationListener(callback: {(playerId, location) in
+                if let player = self.players[playerId] {
+                    player.location = location
+                    if let annotation = self.playerAnnotations[player.id] {
+                        self.playerAnnotations.removeValue(forKey: playerId)
+                        self.map?.removeAnnotation(annotation)
+                    }
+                    self.addToMap(player: player)
+                }
+            }))!,
+            
+            (self.serverAccess?.addFlagAddedListener(callback: {(flag, teamIdOfFlag) in
+                self.flags[flag.id] = flag
+                self.teams[teamIdOfFlag]?.addFlag(id: flag.id)
+                self.addToMap(flag: flag)
+            }))!,
+            
+            (self.serverAccess?.addGameStateChangedListener(callback: {(gameState) in
+                print("New game state: \(gameState)")
+            }))!,
+            
+            (self.serverAccess?.addPlayerTaggedListener(callback: {(playerId, flagHeldLocation) in
+                let player = self.players[playerId]!
+                player.isTagged = true
+                if let flagHeldId = player.flagHeld {
+                    player.flagHeld = nil
+                    self.flags[flagHeldId]!.held = false
+                    self.flags[flagHeldId]!.location = flagHeldLocation!
+                    self.addToMap(flag: self.flags[flagHeldId]!)
+                }
+            }))!,
+            
+            (self.serverAccess?.addFlagPickedUpListener(callback: {(flagId, playerId) in
+                self.flags[flagId]!.held = true
+                self.players[playerId]!.flagHeld = flagId
+                self.map.removeAnnotation(self.flagAnnotations[flagId]!)
+            }))!
+        ]
+        self.listenerKeys.append(contentsOf: [])
+    }
+    
     
     
     func handleError(_ error: GameError) {
         print(error)
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        self.serverAccess?.updateLocation(latitude: String(locations.last!.coordinate.latitude), longitude: String(locations.last!.coordinate.longitude))
-    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -301,7 +308,11 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
     }
     
     @IBAction func printInfo(_ sender: Any) {
-            print(self.userPlayer?.flagHeld)
+        print(self.userPlayer?.flagHeld!)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.serverAccess?.updateLocation(latitude: String(locations.last!.coordinate.latitude), longitude: String(locations.last!.coordinate.longitude))
     }
     
     private func setUpLocation() {
@@ -310,5 +321,4 @@ class MapFlagPlacementViewController: CaptureTheFlagViewController, CLLocationMa
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.locationManager.startUpdatingLocation()
     }
-
 }

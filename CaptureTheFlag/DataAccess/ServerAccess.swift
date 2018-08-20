@@ -13,11 +13,48 @@ struct GameListenerKey {
 class ServerAccess {
     private let point: AsyncRequestResponse
     private var listenerKeys = Dictionary<UUID, ListenerKey>()
+    private var userKey: String?
     
+    var onReconnect: (() -> ())?
     
     
     init(requestResponse: AsyncRequestResponse) {
         self.point = requestResponse
+        self.point.onReconnect = {
+            print("On reconnect being called")
+            self.onReconnect?()
+        }
+    }
+    
+    func initaiteConnection(username: String, password: String, callback: @escaping (GameError?) -> ()) {
+        print("is logging in")
+        var request = URLRequest(url: URL(string: "http://10.26.1.88:8000/authenticate")!)
+        request.httpMethod = "POST"
+        request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+        let paramDictionary = ["username" : username, "password" : password]
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: paramDictionary, options: []) else {
+            return
+        }
+        request.httpBody = httpBody
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, urlResponse, error) in
+            if let response = urlResponse {
+                print(response)
+            }
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String : String]
+                    self.userKey = json["key"]
+                    self.point.open(address: "ws://10.26.1.88:8000", additionalHTTPHeaders: ["authKey" : self.userKey!])
+                    DispatchQueue.main.async {
+                        callback(nil)
+                    }
+                    print(json)
+                } catch {
+                    print(error)
+                }
+            }
+        }.resume()
     }
     
     func addTeamAddedListener(callback: @escaping (Team) -> ()) -> GameListenerKey {
@@ -232,6 +269,13 @@ class ServerAccess {
         
     }
     
+    //capture-the-flag-server.herokuapp.com/
+    //192.168.86.63:8000
+    
+   
+    
+    
+    
     func getFlags(callback: @escaping (Array<Flag>?, GameError?) -> ()) {
         self.point.sendMessage(command: "getFlags", payLoad: nil, callback: {(data, error) in
             if error != nil {
@@ -278,6 +322,54 @@ class ServerAccess {
             }
         })
         
+    }
+    
+    func getCurrentGameState(callback: @escaping (([Player], [Flag], [Team])?, GameError?) -> ()) {
+        self.point.sendMessage(command: "getCurrentGameState", payLoad: nil, callback: {(data, error) in
+            if error != nil {
+                print(error!.description)
+                callback(nil, GameError.serverError)
+                return
+            }
+            let dataAsDict = data as! [String : Any]
+            if let appError = dataAsDict["error"] {
+                let errorString = appError as! String
+                callback(nil, GameError(rawValue: errorString))
+            } else {
+                let stateData = dataAsDict["stateData"] as! [String : Any]
+                let playersDict = stateData["players"] as! [String : Any]
+                let flagsDict = stateData["flags"] as! [String : Any]
+                let teamsDict = stateData["teams"] as! [String : Any]
+                var players = [Player]()
+                var flags = [Flag]()
+                var teams = [Team]()
+                do {
+                    for (_, playerDict) in playersDict {
+                        let player = try self.mapToObject(dictToMap: playerDict as! [String : Any], type: Player.self)
+                        players.append(player)
+                    }
+                } catch {
+                    print(error)
+                }
+                do {
+                    for (_, flagDict) in flagsDict {
+                        let flag = try self.mapToObject(dictToMap: flagDict as! [String : Any], type: Flag.self)
+                        flags.append(flag)
+                    }
+                } catch {
+                    print(error)
+                }
+                do {
+                    for (_, teamDict) in teamsDict {
+                        let team = try self.mapToObject(dictToMap: teamDict as! [String : Any], type: Team.self)
+                        teams.append(team)
+                    }
+                } catch {
+                    print(error)
+                }
+                callback((players, flags, teams), nil)
+            }
+        })
     }
     
     func getPlayerGameInfo(callback: @escaping (Player?, GameError?) -> ()) {
